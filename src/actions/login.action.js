@@ -20,6 +20,14 @@ export const setLoginStateToFailed = () => ({
   type: HTTP_LOGIN_FAILED,
 });
 
+export const autoLogin = (history) => {
+  return () => {
+    if (localStorage.getItem('LOGIN_PASSED') === 'yes') {
+      setTimeout(() => history.push('/stock'), 100);
+    }
+  };
+};
+
 export const login = (history, credential) => {
   return async (dispatch) => {
     dispatch(setRegisterStateToFetching());
@@ -29,6 +37,7 @@ export const login = (history, credential) => {
     );
     if (result.data.message === 'ok') {
       dispatch(setLoginStateToSuccess(result.data.data));
+      localStorage.setItem('LOGIN_PASSED', 'yes');
       history.push('/stock');
     } else {
       dispatch(setLoginStateToFailed());

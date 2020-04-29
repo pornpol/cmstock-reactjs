@@ -1,10 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { login } from '../../actions/login.action';
+import { login, autoLogin } from '../../actions/login.action';
 import { connect } from 'react-redux';
 
-const Login = ({ history, login, loginReducer }) => {
+const Login = ({ history, login, autoLogin, loginReducer }) => {
+  useEffect(() => {
+    autoLogin(history);
+  }, [autoLogin, history]);
+
   const [formState, setFormState] = useState({
     email: 'pornpol.w@gmail.com',
     password: 'qwertyui',
@@ -114,6 +118,7 @@ const mapStateToProps = ({ loginReducer }) => ({
 
 const mapDispatchTpProps = {
   login,
+  autoLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchTpProps)(Login);

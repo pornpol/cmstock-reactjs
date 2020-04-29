@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ history }) => {
   return (
     <nav className='main-header navbar navbar-expand navbar-white navbar-light'>
       {/* Left navbar links */}
@@ -162,6 +163,10 @@ const Header = () => {
             data-slide='true'
             href='#'
             role='button'
+            onClick={() => {
+              localStorage.removeItem('LOGIN_PASSED');
+              history.push('/login');
+            }}
           >
             <i className='fas fa-th-large' />
           </a>
@@ -171,4 +176,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
