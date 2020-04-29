@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
-import Axios from 'axios';
 
-const Login = ({ history }) => {
+import { login } from '../../actions/login.action';
+import { connect } from 'react-redux';
+
+const Login = ({ history, login, loginReducer }) => {
   const [formState, setFormState] = useState({
     email: 'pornpol.w@gmail.com',
     password: 'qwertyui',
@@ -15,13 +17,15 @@ const Login = ({ history }) => {
     });
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    Axios.post(
-      'http://localhost:8000/api/v1/auth/login',
-      formState
-    ).then((res) => console.log(res.data));
-  };
+  const showError = () => (
+    <div className='alert alert-danger alert-dismissible'>
+      <h5>
+        <i className='icon fas fa-ban' /> Error!
+      </h5>
+      Incorrect Information
+    </div>
+  );
+
   return (
     <div className='hold-transition login-page'>
       <div className='login-box'>
@@ -63,12 +67,18 @@ const Login = ({ history }) => {
                   </div>
                 </div>
               </div>
+
+              {loginReducer.isError && showError()}
+
               <div className='row'>
                 {/* /.col */}
                 <div className='col-12'>
                   <button
                     className='btn btn-primary btn-block'
-                    onClick={handleFormSubmit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      login(history, formState);
+                    }}
                   >
                     Sign In
                   </button>
@@ -76,16 +86,6 @@ const Login = ({ history }) => {
                 {/* /.col */}
               </div>
             </form>
-            {/* <div className='social-auth-links text-center mb-3'>
-              <p>- OR -</p>
-              <a href='#' className='btn btn-block btn-primary'>
-                <i className='fab fa-facebook mr-2' /> Sign in using Facebook
-              </a>
-              <a href='#' className='btn btn-block btn-danger'>
-                <i className='fab fa-google-plus mr-2' /> Sign in using Google+
-              </a>
-            </div> */}
-            {/* /.social-auth-links */}
             <p className='mb-1'>
               <a href='forgot-password.html'>I forgot my password</a>
             </p>
@@ -108,4 +108,12 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+const mapStateToProps = ({ loginReducer }) => ({
+  loginReducer,
+});
+
+const mapDispatchTpProps = {
+  login,
+};
+
+export default connect(mapStateToProps, mapDispatchTpProps)(Login);

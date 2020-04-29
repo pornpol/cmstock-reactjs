@@ -4,9 +4,23 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import { Provider } from 'react-redux';
+import reducers from './reducers';
+
+const store = createStore(reducers, applyMiddleware(thunk, logger));
+
+const ReduxApp = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ReduxApp />
   </React.StrictMode>,
   document.getElementById('root')
 );

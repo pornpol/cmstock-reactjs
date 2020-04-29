@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 
-import Axios from 'axios';
+import { register } from '../../actions/register.action';
+import { connect } from 'react-redux';
 
-const Register = ({ history }) => {
+const Register = ({ history, register, registerReducer }) => {
   const [formState, setFormState] = useState({
     fullname: 'Pornpol Wasuwat',
     email: 'pornpol.w@gmail.com',
@@ -18,13 +19,14 @@ const Register = ({ history }) => {
     });
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    Axios.post(
-      'http://localhost:8000/api/v1/auth/register',
-      formState
-    ).then((res) => console.log(res.data));
-  };
+  const showError = () => (
+    <div className='alert alert-danger alert-dismissible'>
+      <h5>
+        <i className='icon fas fa-ban' /> Error!
+      </h5>
+      Incorrect Information
+    </div>
+  );
 
   return (
     <div className='hold-transition register-page'>
@@ -94,6 +96,9 @@ const Register = ({ history }) => {
                   </div>
                 </div>
               </div>
+
+              {registerReducer.isError && showError()}
+
               <div className='row'>
                 <div className='col-8'>
                   <div className='icheck-primary'>
@@ -112,7 +117,10 @@ const Register = ({ history }) => {
                 <div className='col-4'>
                   <button
                     className='btn btn-primary btn-block'
-                    onClick={handleFormSubmit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      register(history, formState);
+                    }}
                   >
                     Register
                   </button>
@@ -120,17 +128,6 @@ const Register = ({ history }) => {
                 {/* /.col */}
               </div>
             </form>
-            {/* <div className='social-auth-links text-center'>
-              <p>- OR -</p>
-              <a href='#' className='btn btn-block btn-primary'>
-                <i className='fab fa-facebook mr-2' />
-                Sign up using Facebook
-              </a>
-              <a href='#' className='btn btn-block btn-danger'>
-                <i className='fab fa-google-plus mr-2' />
-                Sign up using Google+
-              </a>
-            </div> */}
             <a
               href='#'
               className='text-center'
@@ -150,4 +147,12 @@ const Register = ({ history }) => {
   );
 };
 
-export default Register;
+const mapStateToProps = ({ registerReducer }) => ({
+  registerReducer,
+});
+
+const mapDispatchToProps = {
+  register,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
