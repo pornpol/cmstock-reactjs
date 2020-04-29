@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 
+import Axios from 'axios';
+
 const Register = ({ history }) => {
   const [formState, setFormState] = useState({
-    fullname: '',
-    email: '',
-    password: '',
-    password2: '',
+    fullname: 'Pornpol Wasuwat',
+    email: 'pornpol.w@gmail.com',
+    password: 'qwertyui',
+    password2: 'qwertyui',
   });
 
   const handleFormChange = (name) => (e) => {
@@ -18,6 +20,10 @@ const Register = ({ history }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    Axios.post(
+      'http://localhost:8000/api/v1/auth/register',
+      formState
+    ).then((res) => console.log(res.data));
   };
 
   return (

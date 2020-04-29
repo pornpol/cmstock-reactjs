@@ -1,7 +1,27 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useState } from 'react';
+import Axios from 'axios';
 
 const Login = ({ history }) => {
+  const [formState, setFormState] = useState({
+    email: 'pornpol.w@gmail.com',
+    password: 'qwertyui',
+  });
+
+  const handleFormChange = (name) => (e) => {
+    setFormState({
+      ...formState,
+      [name]: e.target.value,
+    });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    Axios.post(
+      'http://localhost:8000/api/v1/auth/login',
+      formState
+    ).then((res) => console.log(res.data));
+  };
   return (
     <div className='hold-transition login-page'>
       <div className='login-box'>
@@ -17,6 +37,8 @@ const Login = ({ history }) => {
             <form className='mb-3'>
               <div className='input-group mb-3'>
                 <input
+                  onChange={handleFormChange('email')}
+                  value={formState.email}
                   type='email'
                   className='form-control'
                   placeholder='Email'
@@ -29,6 +51,8 @@ const Login = ({ history }) => {
               </div>
               <div className='input-group mb-3'>
                 <input
+                  onChange={handleFormChange('password')}
+                  value={formState.password}
                   type='password'
                   className='form-control'
                   placeholder='Password'
@@ -42,7 +66,10 @@ const Login = ({ history }) => {
               <div className='row'>
                 {/* /.col */}
                 <div className='col-12'>
-                  <button type='submit' className='btn btn-primary btn-block'>
+                  <button
+                    className='btn btn-primary btn-block'
+                    onClick={handleFormSubmit}
+                  >
                     Sign In
                   </button>
                 </div>
