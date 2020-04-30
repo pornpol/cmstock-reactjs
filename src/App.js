@@ -7,10 +7,11 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Stock from './components/Stock/Stock';
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
+  withRouter,
 } from 'react-router-dom';
 
 function App() {
@@ -38,22 +39,22 @@ function App() {
 
   return (
     <div className='App'>
-      <Router>
-        {isLoggedIn() && <Header />}
-        {isLoggedIn() && <Menu />}
+      {/* <Router> */}
+      {isLoggedIn() && <Header />}
+      {isLoggedIn() && <Menu />}
 
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
-          <SecuredRoute path='/stock' component={Stock} />
-          <Route path='/' exact={true} component={redirectToLogin} />
-          <Route path='*' component={redirectToLogin} />
-        </Switch>
+      <Switch>
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
+        <SecuredRoute path='/stock' component={Stock} />
+        <Route path='/' exact={true} component={redirectToLogin} />
+        <Route path='*' component={redirectToLogin} />
+      </Switch>
 
-        {isLoggedIn() && <Footer />}
-      </Router>
+      {isLoggedIn() && <Footer />}
+      {/* </Router> */}
     </div>
   );
 }
 
-export default App;
+export default withRouter(App);

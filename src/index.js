@@ -9,12 +9,15 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(reducers, applyMiddleware(thunk, logger));
 
 const ReduxApp = () => (
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 );
 

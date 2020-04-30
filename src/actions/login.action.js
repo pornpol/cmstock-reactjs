@@ -36,9 +36,9 @@ export const login = (history, credential) => {
       credential
     );
     if (result.data.message === 'ok') {
-      dispatch(setLoginStateToSuccess(result.data.data));
       localStorage.setItem('LOGIN_PASSED', 'yes');
       history.push('/stock');
+      dispatch(setLoginStateToSuccess(result.data.data));
     } else {
       dispatch(setLoginStateToFailed());
     }
