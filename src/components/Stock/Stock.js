@@ -1,24 +1,28 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect } from 'react';
 
-export default function Stock() {
-  let dummyData = [
-    { c1: 'xxx', c2: 'xxx', c3: 'xxx', c4: 'xxx', c5: 'xxx' },
-    { c1: 'xxx', c2: 'xxx', c3: 'xxx', c4: 'xxx', c5: 'xxx' },
-    { c1: 'xxx', c2: 'xxx', c3: 'xxx', c4: 'xxx', c5: 'xxx' },
-    { c1: 'xxx', c2: 'xxx', c3: 'xxx', c4: 'xxx', c5: 'xxx' },
-    { c1: 'xxx', c2: 'xxx', c3: 'xxx', c4: 'xxx', c5: 'xxx' },
-  ];
+import { getProducts } from '../../actions/stock.action';
+import { connect } from 'react-redux';
 
-  const renderRows = () =>
-    dummyData.map((data, index) => (
-      <tr key={index}>
-        <td>{data.c1}</td>
-        <td>{data.c2}</td>
-        <td>{data.c3}</td>
-        <td>{data.c4}</td>
-        <td>{data.c5}</td>
-      </tr>
-    ));
+const Stock = ({ getProducts, stockReducer }) => {
+  const renderRows = () => {
+    const { result } = stockReducer;
+    if (result) {
+      return result.products.map((data, index) => (
+        <tr key={index}>
+          <td>{data.id}</td>
+          <td>{data.name}</td>
+          <td>{data.image}</td>
+          <td>{data.price}</td>
+          <td>{data.stock}</td>
+        </tr>
+      ));
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
 
   return (
     <div className='content-wrapper'>
@@ -59,11 +63,11 @@ export default function Stock() {
                 >
                   <thead>
                     <tr>
-                      <th>Rendering engine</th>
-                      <th>Browser</th>
-                      <th>Platform(s)</th>
-                      <th>Engine version</th>
-                      <th>CSS grade</th>
+                      <th>ID</th>
+                      <th>NAME</th>
+                      <th>IMAGE</th>
+                      <th>PRICE</th>
+                      <th>STOCK</th>
                     </tr>
                   </thead>
                   <tbody>{renderRows()}</tbody>
@@ -79,4 +83,14 @@ export default function Stock() {
       {/* /.content */}
     </div>
   );
-}
+};
+
+const mapStateToProps = ({ stockReducer }) => ({
+  stockReducer,
+});
+
+const mapDispatchToProps = {
+  getProducts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Stock);

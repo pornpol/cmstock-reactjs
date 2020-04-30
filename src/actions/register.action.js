@@ -6,16 +6,16 @@ import {
 
 import Axios from 'axios';
 
-export const setRegisterStateToFetching = () => ({
+const setRegisterStateToFetching = () => ({
   type: HTTP_REGISTER_FETCHING,
 });
 
-export const setRegisterStateToSuccess = (payload) => ({
+const setRegisterStateToSuccess = (payload) => ({
   type: HTTP_REGISTER_SUCCESS,
   payload,
 });
 
-export const setRegisterStateToFailed = () => ({
+const setRegisterStateToFailed = () => ({
   type: HTTP_REGISTER_FAILED,
 });
 
